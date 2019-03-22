@@ -19,7 +19,7 @@ public class MyDeque<E> {
   public String toString(){
     String out = "{";
     int index = start;
-    while (start != end) {
+    while (index != end) {
       out += data[index] + ", ";
       if (index < data.length - 1) index++;
       else index = 0;
