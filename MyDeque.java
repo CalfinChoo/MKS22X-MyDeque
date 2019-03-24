@@ -24,20 +24,18 @@ public class MyDeque<E> {
       if (index < data.length - 1) index++;
       else index = 0;
     }
-    out += data[index] + "}";
-    return out;
+    if (size > 0) out += data[index];
+    return out += "}";
   }
   public void addFirst(E element){
     if (element == null) throw new NullPointerException();
     if (size < data.length) {
-      while (data[start] != null) {
-        if (start == 0) start = data.length - 1;
-        else start--;
-      }
+      if (size != 0 && start == 0) start = data.length - 1;
+      else if (size != 0) start--;
       data[start] = element;
     }
     else {
-      E[] bigData = (E[])new Object[data.length * 2];
+      E[] bigData = (E[])new Object[(data.length + 1) * 2];
       int index = 1;
       while (start != end) {
         bigData[index] = data[start];
@@ -55,14 +53,12 @@ public class MyDeque<E> {
   public void addLast(E element){
     if (element == null) throw new NullPointerException();
     if (size < data.length) {
-      while (data[end] != null) {
-        if (end == data.length - 1) end = 0;
-        else end++;
-      }
+      if (size != 0 && end == data.length - 1) end = 0;
+      else if (size != 0) end++;
       data[end] = element;
     }
     else {
-      E[] bigData = (E[])new Object[data.length * 2];
+      E[] bigData = (E[])new Object[(data.length + 1) * 2];
       int index = 0;
       while (start != end) {
         bigData[index] = data[start];
@@ -81,7 +77,7 @@ public class MyDeque<E> {
     if (size == 0) throw new NoSuchElementException();
     E out = data[start];
     data[start] = null;
-    if (start < data.length - 1) start++;
+    if (size != 1 && start < data.length - 1) start++;
     else start = 0;
     size--;
     return out;
@@ -90,15 +86,17 @@ public class MyDeque<E> {
     if (size == 0) throw new NoSuchElementException();
     E out = data[end];
     data[end] = null;
-    if (end > 0) end--;
-    else end = data.length - 1;
+    if (size != 1 && end > 0) end--;
+    else if (size != 1) end = data.length - 1;
     size--;
     return out;
   }
   public E getFirst(){
+    if (size == 0) throw new NoSuchElementException();
     return data[start];
   }
   public E getLast(){
+    if (size == 0) throw new NoSuchElementException();
     return data[end];
   }
 }
